@@ -1,6 +1,8 @@
+import 'package:cart_app/app/utils/common_function.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'app/utils/services.dart';
 import 'auth_service.dart';
 import 'firebase_options.dart';
 import 'package:get/get.dart';
@@ -9,12 +11,13 @@ import 'app/routes/app_pages.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  await initialConfig();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
   runApp(
-      const MyApp(),
+    const MyApp(),
   );
 }
 
@@ -29,10 +32,10 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (BuildContext context, Widget? widget) {
         return GetMaterialApp(
-          title: "GoSmart Employe App",
+          title: "GCart",
           defaultTransition: Transition.fadeIn,
           transitionDuration: const Duration(milliseconds: 200),
-          home: AuthService().handleAuthState(),
+          initialRoute: AppPages.INITIAL,
           getPages: AppPages.routes,
           debugShowCheckedModeBanner: false,
           theme: ThemeData(useMaterial3: false),
@@ -40,4 +43,8 @@ class MyApp extends StatelessWidget {
       },
     );
   }
+}
+Future<void> initialConfig() async {
+  await Get.putAsync(() => GlobalStorageService().init());
+  setSetup();
 }

@@ -2,12 +2,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../auth_service.dart';
+import '../../../routes/app_pages.dart';
+import '../../../utils/common_function.dart';
+import '../../../utils/helper_widget.dart';
+import '../../../utils/key_constatnt.dart';
+import '../../../utils/services.dart';
 import '../model/cart_model.dart';
 import '../providers/home_provider.dart';
 
 class HomeController extends GetxController with GetSingleTickerProviderStateMixin {
   //TODO: Implement HomeController
-
+  // GlobalStorageService storageService = Get.find<GlobalStorageService>();
   final count = 0.obs;
   RxBool isLoading = false.obs;
   RxBool isListLoading = false.obs;
@@ -58,15 +64,6 @@ class HomeController extends GetxController with GetSingleTickerProviderStateMix
       if (tabController.indexIsChanging) {
         // pageNo.value = 1;
         if (selectedIndex.value != tabController.index) {
-          // isListLoading.value=false;
-          // isLoading.value=false;
-          // isLoadingMore.value=false;
-          // topicsListResponse.clear();
-          // topicListByIdModel.response!.clear();
-          // update();
-          // debugPrint('onTappappapa');
-          // debugPrint(topicsListResponse.length.toString());
-          // debugPrint(topicListByIdModel.response!.length.toString());
           selectedIndex.value =int.parse(restaurant!.tableMenuList![0].menuCategoryId!);
           handleSwipe();
         }
@@ -83,9 +80,6 @@ class HomeController extends GetxController with GetSingleTickerProviderStateMix
       }
     });
 
-    // Filter the original list based on a condition
-    // NEWS LIST PAGE BANNER TYPE
-
     await getList(selectedIndex.value);
     isLoading.value = false;
     update();
@@ -99,61 +93,6 @@ class HomeController extends GetxController with GetSingleTickerProviderStateMix
     isListLoading.value = false;
     update();
   }
-
-  // Future<void> getTabs() async {
-  //   try {
-  //     await provider.fetchRestaurant().then((value) {
-  //       debugPrint("*****************************");
-  //       // debugPrint(value.statusCode.toString());
-  //       debugPrint(value.body[0]['restaurant_id'].toString());
-  //       if (value.statusCode == 200) {
-  //         // cartListModels =CartListModel.fromJson(value.body[0]);
-  //         cartListModel.add(value.body[0]);
-  //         debugPrint("*****************************");
-  //         value.body[0]['table_menu_list'].forEach((element) {
-  //           debugPrint("*****************************");
-  //           tabsList.add(Tabs(menuCategoryId: element['menu_category_id'],
-  //               menuCategory: element['menu_category']));
-  //         });
-  //
-  //         selectedIndex.value = int.parse(tabsList[0].menuCategoryId!);
-  //           tableMenuList.addAll(value.body[0]['table_menu_list']);
-  //         debugPrint("*************${tableMenuList.length}****************");
-  //       }
-  //       else if (value.statusCode == 400) {
-  //       } else if (value.statusCode == 401) {
-  //       } else {
-  //         debugPrint(value.statusCode.toString());
-  //       }
-  //     });
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //   }
-  // }
-  //
-  // Future<void> getTabsList(int index) async {
-  //   try {
-  //     debugPrint("*************${index}****************");
-  //     tableMenuList.forEach((element) {
-  //       debugPrint("*************menu_category_id****************");
-  //       if(element["menu_category_id"]==index.toString()){
-  //         debugPrint("*************${element["menu_category_id"]}****************");
-  //
-  //         categoryDishes.addAll(
-  //             element['category_dishes']
-  //       );
-  //         debugPrint("*************${categoryDishes.length}****************");
-  //       }
-  //     });
-  //     // tableMenuList.where((element){
-  //     //   element['menu_category_id']==index)
-  //     // }
-  //     // categoryDishes.addAll(iterable);
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //   }
-  // }
-
 
   void setDishIndex(index){
     index=selectedDishIndex;
@@ -224,14 +163,29 @@ class HomeController extends GetxController with GetSingleTickerProviderStateMix
     isLoading.value =false;
     update();
   }
+  reload2()async{
+    isLoading.value =true;
+    debugPrint( isLoading.value.toString());
+    update();
+    isLoading.value =false;
+    update();
+  }
+  signOut()async{
+    isLoading.value =true;
+    update();
+    // storageService.remove(StorageKeyConstants.tokenEmail);
+    removeToken();
+    AuthService().signOut();
+    Get.offAllNamed(Routes.SIGN_UP);
+    isLoading.value =false;
+    update();
+  }
 
 
   Future getList(int index) async {
     isListLoading.value = true;
     update();
-    debugPrint("*************$index****************");
     restaurant!.tableMenuList!.forEach((element) {
-            debugPrint("*************menu_category_id****************");
             if(element.menuCategoryId==index.toString()){
               cat.addAll(element.categoryDishes!);
             }

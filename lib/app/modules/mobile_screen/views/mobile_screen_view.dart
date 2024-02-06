@@ -55,15 +55,12 @@ class MobileScreenView extends GetView<MobileScreenController> {
               ),
               GestureDetector(
                   onTap: () {
+                    FocusManager.instance.primaryFocus?.unfocus();
                     if (controller.mobielController.text.length != 10) {
-                      debugPrint("${controller.mobielController.text}========");
-                      controller.mobielController.clear();
                       showToast(context, 'Invalid Phone Number');
                     } else {
-                      debugPrint("${controller.mobielController.text}========");
                       AuthService().signInWithPhone(
                           controller.mobielController.text);
-                      controller.mobielController.clear();
                     }
                   },
                   child: Container(

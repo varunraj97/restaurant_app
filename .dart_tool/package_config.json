@@ -170,6 +170,12 @@
       "languageVersion": "2.15"
     },
     {
+      "name": "get_storage",
+      "rootUri": "file:///Users/varunraj/.pub-cache/hosted/pub.dev/get_storage-2.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
       "name": "google_identity_services_web",
       "rootUri": "file:///Users/varunraj/.pub-cache/hosted/pub.dev/google_identity_services_web-0.3.0+2",
       "packageUri": "lib/",
@@ -428,7 +434,7 @@
       "languageVersion": "3.2"
     }
   ],
-  "generated": "2024-02-05T09:49:58.251895Z",
+  "generated": "2024-02-06T10:34:23.562154Z",
   "generator": "pub",
   "generatorVersion": "3.2.3"
 }

@@ -17,7 +17,7 @@ class CartPageView extends GetView<CartPageController> {
         backgroundColor: ColorRes.white,
         leading: IconButton(
           onPressed: () async{
-            Get.back();
+            Get.back(result:'done');
           },
           icon: const Icon(
             Icons.arrow_back,

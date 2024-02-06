@@ -63,6 +63,8 @@ class _HomViewState extends State<HomView> {
                             Get.toNamed(Routes.CART_PAGE)!.then((value) {
                               if(value=='true'){
                                 controller.reload();
+                              }else if(value=='done'){
+                                controller.reload2();
                               }
                             });
                           },
@@ -286,8 +288,9 @@ class _HomViewState extends State<HomView> {
               height: 20,
             ),
             InkWell(
-              onTap: () {
-                AuthService().signOut();
+              onTap: (){
+               controller.signOut();
+               Scaffold.of(context).closeDrawer();
               },
               child: Padding(
                 padding: const EdgeInsets.all(10),

@@ -44,14 +44,13 @@ class OptView extends GetView<OptController> {
           SizedBox(height: 100,),
           GestureDetector(
             onTap: () {
+              FocusManager.instance.primaryFocus?.unfocus();
               if (controller.otpController.text.isEmpty) {
                 debugPrint("${controller.otpController.text}===otp=====");
-                controller.otpController.clear();
                 showToast(context,'invalid otp');
               }else{
                 debugPrint("${controller.otpController.text}====otp====");
                 AuthService().signInWithPhoneStage2(controller.VerificationId!,controller.otpController.text);
-                controller.otpController.clear();
               }
 
             },
